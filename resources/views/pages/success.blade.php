@@ -1,13 +1,12 @@
 @extends('layouts.app')
-@section('title','提示')
+@section('title', '操作成功')
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">提示</div>
+        <div class="panel-heading">操作成功</div>
         <div class="panel-body text-center">
-            <h1>请先验证邮箱</h1>
+            <h1>{{ $msg }}</h1>
             <a class="btn btn-primary" href="{{ route('root') }}">返回首页</a>
-            <a class="btn btn-primary" href="{{ route('email_verification.send') }}">重新发送验证邮件</a>
         </div>
     </div>
 @endsection
