@@ -21,6 +21,6 @@ class UserAddressPolicy
     }
 
     public function own(User $user,UserAddress $address){
-        return $address->user_id = $user->id;
+        return $address->user_id == $user->id;
     }
 }
