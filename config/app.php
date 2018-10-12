@@ -80,6 +80,8 @@ return [
 
     'locale' => 'zh-CN',
 
+    'faker_locale' => 'zh_CN',
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -176,6 +178,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        //IDE智能提示
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 
