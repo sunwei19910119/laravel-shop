@@ -43,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('wechat_apy',function (){
             $config = config('pay.wechat');
+            $config['notify_url'] = '';
             if(app()->environment() !== 'production'){
                 $config['log']['level'] = Logger::DEBUG;
             } else {
