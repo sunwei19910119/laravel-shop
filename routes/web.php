@@ -38,3 +38,12 @@ Route::group(['middleware' => 'auth'],function(){
 
 
 Route::get('products/{product}', 'ProductsController@show')->name('products.show');
+
+
+Route::get('alipay',function(){
+    return app('alipay')->web([
+        'out_trade_no' => time(),
+        'total_amount' => '1',
+        'subject' => '支付测试'
+    ]);
+});
