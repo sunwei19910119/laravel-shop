@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderReviewed;
+use App\Exceptions\InternalException;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
 use App\Http\Requests\ApplyRefundRequest;
@@ -119,7 +120,7 @@ class OrdersController extends Controller
             throw new InvalidRequestException('订单状态不正确');
         }
         if($request->input('agree')){
-
+            $this->_refundOrder($order);
         }else{
             $extra = $order->extra ?: [];
             $extra['refund_disagree_reason'] = $request->input('reason');
@@ -129,5 +130,42 @@ class OrdersController extends Controller
             ]);
         }
         return $order;
+    }
+
+    protected function _refundOrder(Order $order){
+        //判断订单的支付方式
+        switch ($order->payment_method){
+            case 'wechat':
+                break;
+            case 'alipay':
+                //生成退款订单号
+                $refundNo = Order::getAvailableRefundBo();
+                //调用支付宝支付实例的 refund 方法
+                $ret = app('alipay')->refund([
+                    'out_trade_no' => $order->no, //订单流水号
+                    'refund_amount' => $order->total_amount, //退款金额，单位元
+                    'out_request_no' => $refundNo, //退款订单号
+                ]);
+                //根据支付宝文档，如果返回值里有 sub_code 字段说明退款失败
+                if($ret->sub_code){
+                    //将退款失败存入 extra 字段
+                    $extra = $order->extra;
+                    $extra['refund_failed_code'] = $ret->sub_code;
+                    //将订单的退款状态标记为退款失败
+                    $order->update([
+                        'refund_no' => $refundNo,
+                        'refund_status' => Order::REFUND_STATUS_FAILED,
+                        'extra' => $extra,
+                    ]);
+                }else {
+                    // 将订单的退款状态标记为退款成功并保存退款订单号
+                    $order->update([
+                        'refund_no' => $refundNo,
+                        'refund_status' => Order::REFUND_STATUS_SUCCESS,
+                    ]);
+                }
+                break;
+            default: throw new InternalException('未知订单支付方式:'.$order->payment_method);break;
+        }
     }
 }
