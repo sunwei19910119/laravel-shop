@@ -102,7 +102,7 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public static function getAvailableRefundBo(){
+    public static function getAvailableRefundNo(){
         do{
             //uudi类可以用来生成大概率不重复的字符串
             $no = Uuid::uuid4()->getHex();
