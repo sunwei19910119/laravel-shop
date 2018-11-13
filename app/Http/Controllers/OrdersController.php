@@ -8,6 +8,7 @@ use App\Exceptions\InternalException;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
 use App\Http\Requests\ApplyRefundRequest;
+use App\Http\Requests\CrowdFundingOrderRequest;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\SendReviewRequest;
 use App\Jobs\CloseOrder;
@@ -191,5 +192,13 @@ class OrdersController extends Controller
                 break;
             default: throw new InternalException('未知订单支付方式:'.$order->payment_method);break;
         }
+    }
+
+    public function crowdfunding(CrowdFundingOrderRequest $request,OrderService $orderService){
+        $user = $request->user();
+        $sku = ProductSku::find($request->input('sku_id'));
+        $address = UserAddress::find($request->input('address_id'));
+        $amount = $request->input('amount');
+        return $orderService->crowdfunding($user,$address,$sku,$amount);
     }
 }

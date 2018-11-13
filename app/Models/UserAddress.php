@@ -51,6 +51,8 @@ class UserAddress extends Model
     //表示 last_used_at 字段是一个时间日期类型，在之后的代码中 $address->last_used_at 返回的就是Carbon 事件日期对象
     protected $dates = ['last_used_at'];
 
+    protected $appends = ['full_address'];
+
     public function user(){
         return $this->belongsTo(User::class);
     }
