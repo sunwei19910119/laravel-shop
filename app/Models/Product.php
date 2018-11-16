@@ -33,6 +33,11 @@ class Product extends Model
         return $this->hasOne(CrowdfundingProduct::class);
     }
 
+    public function properties()
+    {
+        return $this->hasMany(ProductProperty::class);
+    }
+
     public function getImageUrlAttribute(){
         //如果image字段本身已经是完整的url就直接返回
         if(Str::startsWith($this->attributes['image'],['http://','https://'])){
@@ -44,5 +49,14 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function getGroupedPropertiesAttribute(){
+        return $this->properties
+            ->groupBy('name')
+            ->map(function($properties){
+                // 使用 map 方法将属性集合变为属性值集合
+                return $properties->pluck('value')->all();
+            });
     }
 }
