@@ -51,6 +51,10 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function scopeByIds($query,$ids){
+        return $query->whereIn('id',$ids)->orderByRaw(sprintf("FIND_IN_SET(id,'%s')",join(',',$ids)));
+    }
+
     public function getGroupedPropertiesAttribute(){
         return $this->properties
             ->groupBy('name')

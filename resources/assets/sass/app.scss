@@ -8,6 +8,66 @@ body {
     font-family: Hiragino Sans GB, "Hiragino Sans GB", Helvetica, "Microsoft YaHei", Arial,sans-serif;
 }
 
+@mixin product-list {
+    .products-list {
+        padding: 0 15px;
+        .product-item {
+            padding: 0 5px;
+            margin-bottom: 10px;
+            .product-content {
+                border: 1px solid #eee;
+                .top {
+                    padding: 5px;
+                    img {
+                        width: 100%;
+                    }
+                    .price {
+                        margin-top: 5px;
+                        font-size: 20px;
+                        color: #ff0036;
+                        b {
+                            font-size: 14px;
+                        }
+                    }
+                    .title {
+                        margin-top: 10px;
+                        height: 32px;
+                        line-height: 12px;
+                        max-height: 32px;
+                        a {
+                            font-size: 12px;
+                            line-height: 14px;
+                            color: #333;
+                            text-decoration: none;
+                        }
+                    }
+                }
+                .bottom {
+                    font-size: 12px;
+                    display: flex;
+                    .sold_count span {
+                        color: #b57c5b;
+                        font-weight: bold;
+                    }
+                    .review_count span {
+                        color: #38b;
+                        font-weight: bold;
+                    }
+                    &>div {
+                        &:first-child {
+                            border-right: 1px solid #eee;
+                        }
+                        padding: 10px 5px;
+                        line-height: 12px;
+                        flex-grow: 1;
+                        border-top: 1px solid #eee;
+                    }
+                }
+            }
+        }
+    }
+}
+
 /* 顶部导航 */
 
 .navbar-static-top {
@@ -90,6 +150,15 @@ body {
 }
 
 .products-show-page {
+    .similar-products {
+        @include product-list;
+        .title {
+            font-weight: normal;
+        }
+        .price {
+            background-color: unset;
+        }
+    }
     .cover {
         width: 100%;
         border: solid 1px #eee;
@@ -257,10 +326,13 @@ body {
     }
 }
 
+
+
 .products-index-page, .products-favorites-page {
     .pagination {
         margin-right: 5px;
     }
+    @include product-list;
     .search-form {
         padding: 0 20px 10px;
         border-bottom: 1px solid #eee;
@@ -319,63 +391,7 @@ body {
             }
         }
     }
-    .products-list {
-        padding: 0 15px;
-        .product-item {
-            padding: 0 5px;
-            margin-bottom: 10px;
-            .product-content {
-                border: 1px solid #eee;
-                .top {
-                    padding: 5px;
-                    img {
-                        width: 100%;
-                    }
-                    .price {
-                        margin-top: 5px;
-                        font-size: 20px;
-                        color: #ff0036;
-                        b {
-                            font-size: 14px;
-                        }
-                    }
-                    .title {
-                        margin-top: 10px;
-                        height: 32px;
-                        line-height: 12px;
-                        max-height: 32px;
-                        a {
-                            font-size: 12px;
-                            line-height: 14px;
-                            color: #333;
-                            text-decoration: none;
-                        }
-                    }
-                }
-                .bottom {
-                    font-size: 12px;
-                    display: flex;
-                    .sold_count span {
-                        color: #b57c5b;
-                        font-weight: bold;
-                    }
-                    .review_count span {
-                        color: #38b;
-                        font-weight: bold;
-                    }
-                    &>div {
-                        &:first-child {
-                            border-right: 1px solid #eee;
-                        }
-                        padding: 10px 5px;
-                        line-height: 12px;
-                        flex-grow: 1;
-                        border-top: 1px solid #eee;
-                    }
-                }
-            }
-        }
-    }
+
 }
 
 
